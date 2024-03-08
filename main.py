@@ -11,7 +11,7 @@ player_y = height - flscr
 run = True
 clock = pygame.time.Clock()
 jump = False
-jump_count = 9
+jump_count = 0
 block = []
 ground = False
 inair = False
@@ -36,6 +36,8 @@ class Platform:
 
 
 def provpaltform(x, y, jump_count):
+    if jump_count > 0:
+        return True, y, jump_count
     for cord in range(len(block)):
         if block[cord][0] < x < block[cord][0] + block[cord][2] and block[cord][1] <= y <= block[cord][1] + block[cord][3]:
             y = block[cord][1]
