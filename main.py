@@ -35,18 +35,21 @@ class Platform:
         pass
 
 
-def provpaltform(x, y, jump_count):
+def provpaltform(x, y, jump_count, jump):
+    jump = True
     if jump_count > 0:
-        return True, y, jump_count
+        return True, y, jump_count, jump
     for cord in range(len(block)):
         if block[cord][0] < x < block[cord][0] + block[cord][2] and block[cord][1] < y < block[cord][1] + block[cord][3]:
             proverka_y = block[cord][1]
-            if proverka_y <= y <= proverka_y + 10:
+            if proverka_y-10 <= y <= proverka_y + 10:
                 jump_count = 0
-                return False, y, jump_count
+                jump = False
+                y = proverka_y
+                return False, y, jump_count, jump
             elif proverka_y < y:
-                return True, y, jump_count
-    return True, y, jump_count
+                return True, y, jump_count, jump
+    return True, y, jump_count, jump
 
 
 
@@ -69,16 +72,16 @@ while run:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             quit()
     pressed = pygame.key.get_pressed()
-    if pressed[pygame.K_w]: jump_count = 9; player_y -= 1
+    if pressed[pygame.K_w] and jump == False: jump_count = 9; player_y -= 1; jump = True
     if pressed[pygame.K_a]: player_x -= 7
     if pressed[pygame.K_d]: player_x += 7
     screen.fill((255, 255, 255))
 
-    in_air, player_y, jump_count = provpaltform(player_x, player_y, jump_count)
+    in_air, player_y, jump_count, jump = provpaltform(player_x, player_y, jump_count, jump)
 
     if in_air:
-        player_y -= jump_count
-        jump_count -= 0.25
+        player_y -= (jump_count * abs(jump_count))* 0.35
+        jump_count -= 0.3
 
 
     pygame.draw.rect(screen, (40, 162, 255), (player_x, player_y - 120, 60, 120))
