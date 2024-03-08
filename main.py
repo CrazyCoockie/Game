@@ -7,14 +7,14 @@ widht, height = pygame.display.list_modes()[0][0], pygame.display.list_modes()[0
 screen = pygame.display.set_mode((widht, height - flscr))
 
 player_x = flscr
-player_y = height - flscr
+player_y = height - 100
 run = True
 clock = pygame.time.Clock()
 jump = False
 jump_count = 0
 block = []
 ground = False
-inair = False
+in_air = False
 
 
 class Platform:
@@ -39,10 +39,13 @@ def provpaltform(x, y, jump_count):
     if jump_count > 0:
         return True, y, jump_count
     for cord in range(len(block)):
-        if block[cord][0] < x < block[cord][0] + block[cord][2] and block[cord][1] <= y <= block[cord][1] + block[cord][3]:
-            y = block[cord][1]
-            jump_count = 0
-            return False, y, jump_count
+        if block[cord][0] < x < block[cord][0] + block[cord][2] and block[cord][1] < y < block[cord][1] + block[cord][3]:
+            proverka_y = block[cord][1]
+            if proverka_y <= y <= proverka_y + 10:
+                jump_count = 0
+                return False, y, jump_count
+            elif proverka_y < y:
+                return True, y, jump_count
     return True, y, jump_count
 
 
@@ -52,6 +55,10 @@ while run:
     platform1.blockcord()
     platform2 = Platform(300, height - 400, 300, 50)
     platform2.blockcord()
+    platform3 = Platform(500, height - 600, 300, 50)
+    platform3.blockcord()
+    platform4 = Platform(800, height - 800, 300, 50)
+    platform4.blockcord()
     glavplatform = Platform(0, height-100, widht, 100)
     glavplatform.blockcord()
 
@@ -71,12 +78,15 @@ while run:
 
     if in_air:
         player_y -= jump_count
-        jump_count -= 0.3
+        jump_count -= 0.25
+
 
     pygame.draw.rect(screen, (40, 162, 255), (player_x, player_y - 120, 60, 120))
 
     platform1.draw()
     platform2.draw()
+    platform3.draw()
+    platform4.draw()
     glavplatform.draw()
 
     pygame.display.flip()
