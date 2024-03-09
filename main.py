@@ -2,12 +2,12 @@ import pygame
 
 pygame.init()
 
-flscr = 70
+flscr = 0
 widht, height = pygame.display.list_modes()[0][0], pygame.display.list_modes()[0][1]
 screen = pygame.display.set_mode((widht, height - flscr))
 
-player_x = flscr
-player_y = height - 100
+player_x = 70
+player_y = height - 400
 run = True
 clock = pygame.time.Clock()
 jump = False
@@ -40,15 +40,14 @@ def provpaltform(x, y, jump_count, jump):
     if jump_count > 0:
         return True, y, jump_count, jump
     for cord in range(len(block)):
-        if block[cord][0] < x < block[cord][0] + block[cord][2] and block[cord][1] < y < block[cord][1] + block[cord][3]:
-            proverka_y = block[cord][1]
-            if proverka_y-10 <= y <= proverka_y + 10:
+        if block[cord][0] <= x <= block[cord][0] + block[cord][2]:
+            proverka_y = y - (jump_count * abs(jump_count)) * 0.35
+
+            if y <= block[cord][1] and block[cord][1] < proverka_y:
                 jump_count = 0
                 jump = False
-                y = proverka_y
+                y = block[cord][1]
                 return False, y, jump_count, jump
-            elif proverka_y < y:
-                return True, y, jump_count, jump
     return True, y, jump_count, jump
 
 
@@ -80,9 +79,8 @@ while run:
     in_air, player_y, jump_count, jump = provpaltform(player_x, player_y, jump_count, jump)
 
     if in_air:
-        player_y -= (jump_count * abs(jump_count))* 0.35
+        player_y -= (jump_count * abs(jump_count)) * 0.35
         jump_count -= 0.3
-
 
     pygame.draw.rect(screen, (40, 162, 255), (player_x, player_y - 120, 60, 120))
 
