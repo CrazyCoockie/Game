@@ -3,7 +3,7 @@ import pygame
 pygame.init()
 
 flscr = 0
-widht, height = pygame.display.list_modes()[][0], pygame.display.list_modes()[0][1]
+widht, height = pygame.display.list_modes()[0][0], pygame.display.list_modes()[0][1]
 screen = pygame.display.set_mode((widht, height - flscr))
 
 pixel_x = widht/500
@@ -47,7 +47,7 @@ def provpaltform(x, y, jump_count, jump):
     if jump_count > 0:
         return True, y, jump_count, jump
     for cord in range(len(block)):
-        if block[cord][0] <= x <= block[cord][0] + block[cord][2]:
+        if block[cord][0] <= x <= block[cord][0] + block[cord][2] or block[cord][0] <= x+(pixel_x*17) <= block[cord][0] + block[cord][2]:
             proverka_y = y - (jump_count * abs(jump_count)) * 0.35
 
             if y <= block[cord][1] and block[cord][1] < proverka_y:
@@ -76,16 +76,23 @@ while run:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             quit()
     pressed = pygame.key.get_pressed()
-    if pressed[pygame.K_w] and jump == False: jump_count = 9; player_y -= 1; jump = True
-    if pressed[pygame.K_a]: player_x -= 7
-    if pressed[pygame.K_d]: player_x += 7
+    if pressed[pygame.K_w] and jump == False: jump_count = pixel_y*2.5; player_y -= 1; jump = True
+    if pressed[pygame.K_a]: player_x -= pixel_x*2
+    if pressed[pygame.K_d]: player_x += pixel_y*2
     screen.fill((255, 255, 255))
 
     in_air, player_y, jump_count, jump = provpaltform(player_x, player_y, jump_count, jump)
 
     if in_air:
         player_y -= (jump_count * abs(jump_count)) * 0.35
-        jump_count -= 0.3
+        jump_count -= (pixel_y*0.1)
+
+    if player_x < 0:
+        player_x = 0
+    if player_x + (pixel_x*17) > widht:
+        player_x = widht - (pixel_x*17) + 1
+
+
 
     pygame.draw.rect(screen, (40, 162, 255), (player_x, player_y - (pixel_y*37), pixel_x*17, (pixel_y*37)+1))
 
