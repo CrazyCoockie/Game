@@ -3,12 +3,11 @@ import pygame
 pygame.init()
 
 flscr = 0
-widht, height = pygame.display.list_modes()[0][0], pygame.display.list_modes()[0][1]
+widht, height = pygame.display.list_modes()[10][0], pygame.display.list_modes()[10][1]
 screen = pygame.display.set_mode((widht, height - flscr))
 
 pixel_x = widht/500
 pixel_y = height/250
-
 
 
 player_x = 70
@@ -35,8 +34,6 @@ class Platform:
     def draw(self):
         pl = pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))
 
-    def collision(self, x, y):
-        pass
 glavplatform = Platform(0, height-(pixel_y*20), widht, 100)
 glavplatform.blockcord()
 
@@ -48,7 +45,7 @@ def provpaltform(x, y, jump_count, jump):
         return True, y, jump_count, jump
     for cord in range(len(block)):
         if block[cord][0] <= x <= block[cord][0] + block[cord][2] or block[cord][0] <= x+(pixel_x*17) <= block[cord][0] + block[cord][2]:
-            proverka_y = y - (jump_count * abs(jump_count)) * 0.35
+            proverka_y = y - (jump_count)
 
             if y <= block[cord][1] and block[cord][1] < proverka_y:
                 jump_count = 0
@@ -76,7 +73,7 @@ while run:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             quit()
     pressed = pygame.key.get_pressed()
-    if pressed[pygame.K_w] and jump == False: jump_count = pixel_y*2.5; player_y -= 1; jump = True
+    if pressed[pygame.K_w] and jump == False: jump_count = pixel_y*5; player_y -= 1; jump = True
     if pressed[pygame.K_a]: player_x -= pixel_x*2
     if pressed[pygame.K_d]: player_x += pixel_y*2
     screen.fill((255, 255, 255))
@@ -84,8 +81,8 @@ while run:
     in_air, player_y, jump_count, jump = provpaltform(player_x, player_y, jump_count, jump)
 
     if in_air:
-        player_y -= (jump_count * abs(jump_count)) * 0.35
-        jump_count -= (pixel_y*0.1)
+        player_y -= (jump_count)
+        jump_count -= (pixel_y*0.2)
 
     if player_x < 0:
         player_x = 0
