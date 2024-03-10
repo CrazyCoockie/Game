@@ -3,11 +3,15 @@ import pygame
 pygame.init()
 
 flscr = 0
-widht, height = pygame.display.list_modes()[0][0], pygame.display.list_modes()[0][1]
+widht, height = pygame.display.list_modes()[][0], pygame.display.list_modes()[0][1]
 screen = pygame.display.set_mode((widht, height - flscr))
 
+pixel_x = widht/500
+pixel_y = height/250
+
+
+
 player_x = 70
-player_y = height - 100
 run = True
 clock = pygame.time.Clock()
 jump = False
@@ -33,8 +37,7 @@ class Platform:
 
     def collision(self, x, y):
         pass
-
-glavplatform = Platform(0, height-100, widht, 100)
+glavplatform = Platform(0, height-(pixel_y*20), widht, 100)
 glavplatform.blockcord()
 
 player_y = glavplatform.y
@@ -57,13 +60,13 @@ def provpaltform(x, y, jump_count, jump):
 
 
 while run:
-    platform1 = Platform(0, height - 200, 300, 50)
+    platform1 = Platform(0, glavplatform.y-(pixel_y*40), pixel_x*80, pixel_y*10)
     platform1.blockcord()
-    platform2 = Platform(300, height - 400, 300, 50)
+    platform2 = Platform(platform1.x+(pixel_x*100), platform1.y-(pixel_y*60), pixel_x*80, pixel_y*10)
     platform2.blockcord()
-    platform3 = Platform(500, height - 600, 300, 50)
+    platform3 = Platform(platform2.x+(pixel_x*150), platform2.y-(pixel_y*40), pixel_x*80, pixel_y*10)
     platform3.blockcord()
-    platform4 = Platform(800, height - 800, 300, 50)
+    platform4 = Platform(platform3.x+(pixel_x*150), platform3.y-(pixel_y*40), pixel_x*80, pixel_y*10)
     platform4.blockcord()
 
     events = pygame.event.get()
@@ -84,7 +87,7 @@ while run:
         player_y -= (jump_count * abs(jump_count)) * 0.35
         jump_count -= 0.3
 
-    pygame.draw.rect(screen, (40, 162, 255), (player_x, player_y - 120, 60, 120))
+    pygame.draw.rect(screen, (40, 162, 255), (player_x, player_y - (pixel_y*37), pixel_x*17, (pixel_y*37)+1))
 
     platform1.draw()
     platform2.draw()
