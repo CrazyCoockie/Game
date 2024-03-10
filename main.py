@@ -7,7 +7,7 @@ widht, height = pygame.display.list_modes()[0][0], pygame.display.list_modes()[0
 screen = pygame.display.set_mode((widht, height - flscr))
 
 player_x = 70
-player_y = height - 400
+player_y = height - 100
 run = True
 clock = pygame.time.Clock()
 jump = False
@@ -34,6 +34,10 @@ class Platform:
     def collision(self, x, y):
         pass
 
+glavplatform = Platform(0, height-100, widht, 100)
+glavplatform.blockcord()
+
+player_y = glavplatform.y
 
 def provpaltform(x, y, jump_count, jump):
     jump = True
@@ -61,8 +65,6 @@ while run:
     platform3.blockcord()
     platform4 = Platform(800, height - 800, 300, 50)
     platform4.blockcord()
-    glavplatform = Platform(0, height-100, widht, 100)
-    glavplatform.blockcord()
 
     events = pygame.event.get()
     for event in events:
